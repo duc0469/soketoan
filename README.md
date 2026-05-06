@@ -283,7 +283,3 @@ cd frontend
 npm run build
 # Output: build/
 ```
-
-## 🤝 Đóng góp
-
-Mọi đóng góp đều được chào đón! Hãy tạo issue hoặc pull request.

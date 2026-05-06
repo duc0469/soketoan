@@ -223,107 +223,6 @@ upload_batches (1) ──< (N) transactions (1) ──< (N) ledgers
 - **Purpose**: Lịch sử upload, tracking
 - **Status**: PROCESSING → DONE/ERROR
 
-## Security Considerations
-
-### Current Implementation
-
-- ✅ SQL injection prevention (prepared statements)
-- ✅ File type validation
-- ✅ File size limit (20MB)
-- ✅ CORS enabled (all origins)
-- ✅ Input validation
-
-### Missing (Production TODO)
-
-- ❌ Authentication (JWT)
-- ❌ Authorization (RBAC)
-- ❌ Rate limiting
-- ❌ HTTPS
-- ❌ Input sanitization
-- ❌ CSRF protection
-- ❌ XSS prevention
-
-## Performance Optimizations
-
-### Current
-
-- ✅ MySQL connection pooling
-- ✅ Bulk INSERT (not individual)
-- ✅ Rule caching (1 minute)
-- ✅ Indexes on frequently queried columns
-- ✅ Pagination (default 200 items)
-
-### Future
-
-- [ ] Redis caching
-- [ ] Database query optimization
-- [ ] Lazy loading components
-- [ ] Virtual scrolling for large tables
-- [ ] Background job processing (Bull/Agenda)
-
-## Scalability
-
-### Current Limits
-
-- Single server
-- Single database
-- In-memory file processing
-- Synchronous parsing
-
-### Scaling Strategy
-
-1. **Horizontal scaling**: Load balancer + multiple backend instances
-2. **Database**: Read replicas, sharding by date
-3. **File processing**: Queue system (RabbitMQ/Redis)
-4. **Caching**: Redis for rules, sessions
-5. **CDN**: Static assets (frontend build)
-
-## Error Handling
-
-### Backend
-
-```javascript
-// express-async-errors: Auto catch async errors
-app.use(async (req, res) => {
-  throw new Error("Something went wrong");
-});
-
-// Global error handler
-app.use((err, req, res, next) => {
-  console.error(err);
-  res.status(500).json({ error: err.message });
-});
-```
-
-### Frontend
-
-```javascript
-// TanStack Query: Auto retry & error handling
-const { data, error, isLoading } = useQuery({
-  queryKey: ["transactions"],
-  queryFn: getTransactions,
-  retry: 3,
-});
-
-// Toast notifications
-toast.error("Upload failed");
-```
-
-## Monitoring & Logging
-
-### Current
-
-- Console.log in backend
-- Browser console in frontend
-
-### Production TODO
-
-- [ ] Winston/Pino for structured logging
-- [ ] Log aggregation (ELK stack)
-- [ ] APM (New Relic, DataDog)
-- [ ] Error tracking (Sentry)
-- [ ] Metrics (Prometheus + Grafana)
-
 ## Deployment Architecture
 
 ### Development
@@ -354,36 +253,6 @@ localhost:3000 (Frontend) → localhost:5000 (Backend) → localhost:3306 (MySQL
                                  └──────────┘
 ```
 
-## Technology Choices
-
-### Why React?
-
-- ✅ Component-based architecture
-- ✅ Large ecosystem
-- ✅ Virtual DOM performance
-- ✅ Easy to learn
-
-### Why Node.js?
-
-- ✅ JavaScript full-stack
-- ✅ Non-blocking I/O
-- ✅ Rich package ecosystem (npm)
-- ✅ Good for I/O-heavy tasks
-
-### Why MySQL?
-
-- ✅ ACID compliance
-- ✅ Mature & stable
-- ✅ Good for structured data
-- ✅ Strong community support
-
-### Why Express?
-
-- ✅ Minimalist & flexible
-- ✅ Large middleware ecosystem
-- ✅ Easy to learn
-- ✅ Production-ready
-
 ## Alternative Architectures
 
 ### Microservices
@@ -410,7 +279,3 @@ File Storage (S3)
 ```
 Upload → Queue → Parser → Queue → Classifier → Queue → DB
 ```
-
----
-
-**Last updated**: 2026-05-06
