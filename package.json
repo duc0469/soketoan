@@ -1,0 +1,21 @@
+{
+  "name": "accounting-app",
+  "version": "1.0.0",
+  "description": "Hệ thống kế toán tự động - Upload sao kê, phân loại tự động",
+  "scripts": {
+    "install:all": "cd backend && npm install && cd ../frontend && npm install",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm start",
+    "start:backend": "cd backend && npm start",
+    "build:frontend": "cd frontend && npm run build"
+  },
+  "keywords": [
+    "accounting",
+    "automation",
+    "react",
+    "nodejs",
+    "mysql"
+  ],
+  "author": "Kiro AI",
+  "license": "MIT"
+}
