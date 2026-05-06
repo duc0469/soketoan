@@ -36,6 +36,21 @@ export const createRule = (data) => api.post("/rules", data);
 export const updateRule = (id, data) => api.put(`/rules/${id}`, data);
 export const deleteRule = (id) => api.delete(`/rules/${id}`);
 
+// Partners
+export const getPartners = () => api.get("/partners");
+export const createPartner = (data) => api.post("/partners", data);
+export const updatePartner = (id, data) => api.put(`/partners/${id}`, data);
+export const deletePartner = (id) => api.delete(`/partners/${id}`);
+export const getPartnerLedger = (params) =>
+  api.get("/partners/ledger", { params });
+export const getPartnerBalance = (params) =>
+  api.get("/partners/balance", { params });
+
+// Transaction logs & smart suggestion
+export const getTransactionLogs = (id) => api.get(`/transactions/${id}/logs`);
+export const suggestRule = (transaction_id) =>
+  api.post("/transactions/suggest-rule", { transaction_id });
+
 // Export
 export const exportToExcel = (params) => {
   return api.get("/export/excel", {

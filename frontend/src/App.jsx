@@ -6,6 +6,7 @@ import TransactionGrid from "./components/TransactionGrid";
 import LedgerView from "./components/LedgerView";
 import DeductibleExpensesView from "./components/DeductibleExpensesView";
 import RulesManager from "./components/RulesManager";
+import PartnersManager from "./components/PartnersManager";
 import {
   updateTransaction,
   confirmTransactions,
@@ -100,10 +101,11 @@ function App() {
         >
           <div style={{ display: "flex", gap: 8 }}>
             {[
-              { id: "transactions", label: "Giao dịch" },
-              { id: "ledgers", label: "Sổ kế toán" },
-              { id: "deductible", label: "Chi phí được trừ" },
-              { id: "rules", label: "Rules" },
+              { id: "transactions", label: "📊 Giao dịch" },
+              { id: "ledgers", label: "📚 Sổ kế toán" },
+              { id: "deductible", label: "💰 Chi phí được trừ" },
+              { id: "partners", label: "🤝 Đối tác" },
+              { id: "rules", label: "⚙️ Rules" },
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -189,6 +191,18 @@ function App() {
               }}
             >
               <RulesManager />
+            </div>
+          )}
+
+          {activeTab === "partners" && (
+            <div
+              style={{
+                background: "#fff",
+                borderRadius: 12,
+                boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+              }}
+            >
+              <PartnersManager refreshTrigger={ledgerRefreshTrigger} />
             </div>
           )}
         </main>

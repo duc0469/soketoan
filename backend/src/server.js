@@ -10,6 +10,7 @@ const transactionRoutes = require("./routes/transactions");
 const ledgerRoutes = require("./routes/ledgers");
 const ruleRoutes = require("./routes/rules");
 const exportRoutes = require("./routes/export");
+const partnerRoutes = require("./routes/partners");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -25,6 +26,7 @@ app.use("/api/transactions", transactionRoutes);
 app.use("/api/ledgers", ledgerRoutes);
 app.use("/api/rules", ruleRoutes);
 app.use("/api/export", exportRoutes);
+app.use("/api/partners", partnerRoutes);
 
 // Health check
 app.get("/api/health", (req, res) =>

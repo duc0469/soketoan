@@ -24,6 +24,25 @@ export default function UploadZone({ onUploaded }) {
         toast.success(
           `Đã xử lý ${data.total_rows} giao dịch từ "${data.file_name}"`,
         );
+        // Cảnh báo số dư không khớp
+        if (data.balance_warning) {
+          toast.error(`⚠️ ${data.balance_warning}`, { duration: 8000 });
+        }
+        // Cảnh báo giao dịch trùng lặp
+        if (data.duplicates && data.duplicates.length > 0) {
+          toast(
+            `⚠️ Phát hiện ${data.duplicates.length} giao dịch có thể trùng lặp`,
+            {
+              icon: "⚠️",
+              duration: 6000,
+              style: {
+                background: "#fffbeb",
+                color: "#92400e",
+                border: "1px solid #f59e0b",
+              },
+            },
+          );
+        }
         onUploaded(data);
       } catch (err) {
         toast.error(err.response?.data?.error || "Upload thất bại");
