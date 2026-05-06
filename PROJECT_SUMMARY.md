@@ -240,6 +240,7 @@ File Upload → Parser → Rule Engine → Transactions (PENDING)
    - Dùng khi cần reset hệ thống
 
 2. **fix-priorities.js**
+
    ```bash
    node backend/fix-priorities.js
    ```
@@ -390,7 +391,6 @@ MIT License - See `LICENSE` file for details.
 
 ## 👥 Team
 
-- **Developer**: Kiro AI Assistant
 - **Project Type**: Accounting Automation System
 - **Language**: Vietnamese (UI/UX), English (Code)
 - **Started**: 2026-05-06

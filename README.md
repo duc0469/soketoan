@@ -287,12 +287,3 @@ npm run build
 ## 🤝 Đóng góp
 
 Mọi đóng góp đều được chào đón! Hãy tạo issue hoặc pull request.
-
-## 📄 License
-
-MIT License
-
----
-
-**Phát triển bởi**: Kiro AI Assistant  
-**Năm**: 2026
