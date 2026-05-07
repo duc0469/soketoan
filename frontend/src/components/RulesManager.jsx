@@ -110,7 +110,7 @@ export default function RulesManager() {
           marginBottom: 24,
         }}
       >
-        <h2 style={{ fontSize: 24, fontWeight: 700 }}>⚙️ Quản lý Rules</h2>
+        <h2 style={{ fontSize: 24, fontWeight: 700 }}>Quản lý Rules</h2>
         <button
           onClick={() => setShowForm(!showForm)}
           style={{
@@ -123,7 +123,7 @@ export default function RulesManager() {
             cursor: "pointer",
           }}
         >
-          {showForm ? "✕ Đóng" : "+ Thêm Rule"}
+          {showForm ? "Đóng" : "Thêm Rule"}
         </button>
       </div>
 
@@ -240,14 +240,14 @@ export default function RulesManager() {
           </div>
           <div style={{ marginTop: 16, display: "flex", gap: 12 }}>
             <button type="submit" style={btnStyle("#10b981")}>
-              {editing ? "💾 Cập nhật" : "➕ Tạo mới"}
+              {editing ? "Cập nhật" : "Tạo mới"}
             </button>
             <button
               type="button"
               onClick={resetForm}
               style={btnStyle("#6b7280")}
             >
-              ✕ Hủy
+              Hủy
             </button>
           </div>
         </form>
@@ -368,13 +368,13 @@ export default function RulesManager() {
                         onClick={() => handleEdit(rule)}
                         style={actionBtn("#3b82f6")}
                       >
-                        ✏️
+                        Sửa
                       </button>
                       <button
                         onClick={() => handleDelete(rule.id)}
                         style={actionBtn("#ef4444")}
                       >
-                        🗑️
+                        Xóa
                       </button>
                     </div>
                   </td>

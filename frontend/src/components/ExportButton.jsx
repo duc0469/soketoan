@@ -59,17 +59,7 @@ export default function ExportButton({ filters }) {
         gap: 8,
       }}
     >
-      {loading ? (
-        <>
-          <span>⏳</span>
-          <span>Đang xuất...</span>
-        </>
-      ) : (
-        <>
-          <span>📥</span>
-          <span>Xuất Excel</span>
-        </>
-      )}
+      {loading ? <span>Đang xuất...</span> : <span>Xuất Excel</span>}
     </button>
   );
 }

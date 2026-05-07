@@ -123,32 +123,7 @@ router.post("/", upload.single("file"), async (req, res) => {
       ["DONE", classified.length, classified.length, batchId],
     );
 
-    // 5. Kiểm tra số dư (balance verification)
-    let balanceWarning = null;
-    const rowsWithBalance = rawRows.filter(
-      (r) => r.balance !== null && r.balance !== undefined,
-    );
-    if (rowsWithBalance.length >= 2) {
-      const firstBalance = rowsWithBalance[0].balance;
-      const lastBalance = rowsWithBalance[rowsWithBalance.length - 1].balance;
-      const totalIn = rawRows
-        .filter((r) => r.amount > 0)
-        .reduce((s, r) => s + r.amount, 0);
-      const totalOut = rawRows
-        .filter((r) => r.amount < 0)
-        .reduce((s, r) => s + Math.abs(r.amount), 0);
-      const expectedBalance = firstBalance + totalIn - totalOut;
-      const diff = Math.abs(expectedBalance - lastBalance);
-      if (diff > 1000) {
-        // Sai lệch > 1,000 VND thì cảnh báo
-        balanceWarning = `Số dư không khớp: kỳ vọng ${expectedBalance.toLocaleString("vi-VN")} VND, thực tế ${lastBalance.toLocaleString("vi-VN")} VND (chênh lệch ${diff.toLocaleString("vi-VN")} VND)`;
-        console.warn(
-          `[UPLOAD] Balance mismatch: expected ${expectedBalance}, got ${lastBalance}, diff ${diff}`,
-        );
-      }
-    }
-
-    // 6. Phát hiện giao dịch trùng lặp
+    // 5. Phát hiện giao dịch trùng lặp
     const duplicates = [];
     const seen = new Map();
     for (const t of rawRows) {
@@ -175,7 +150,6 @@ router.post("/", upload.single("file"), async (req, res) => {
       file_name: fileName,
       total_rows: inserted.length,
       transactions: inserted,
-      balance_warning: balanceWarning || null,
       duplicates: duplicates.length > 0 ? duplicates : null,
     });
   } catch (err) {

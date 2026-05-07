@@ -1,8 +1,8 @@
-# 💼 Hệ Thống Kế Toán Tự Động
+# Hệ Thống Kế Toán Tự Động
 
 Ứng dụng web kế toán tự động giúp xử lý sao kê ngân hàng, phân loại giao dịch và tạo sổ kế toán.
 
-## 🎯 Tính năng chính
+## Tính năng chính
 
 ### 1. Upload & Parse File Sao Kê
 
@@ -40,7 +40,7 @@
 - Lọc theo: Loại sổ, Khoảng thời gian
 - Tổng hợp theo loại sổ và tài khoản
 
-## 🏗️ Kiến trúc
+## Kiến trúc
 
 ```
 ┌─────────────┐      ┌─────────────┐      ┌─────────────┐
@@ -55,7 +55,7 @@
 - **Backend**: Node.js, Express, Multer, xlsx, pdf-parse
 - **Database**: MySQL 8.0+
 
-## 📊 Database Schema
+## Database Schema
 
 ### Bảng `transactions`
 
@@ -84,7 +84,7 @@ Lưu dữ liệu sau khi xác nhận (sổ kế toán chính thức)
 
 Lịch sử upload file
 
-## 🚀 Cài đặt & Chạy
+## Cài đặt & Chạy
 
 ### 1. Cài đặt Database
 
@@ -130,7 +130,7 @@ npm start
 
 Frontend chạy tại: `http://localhost:3000`
 
-## 📝 Luồng xử lý
+## Luồng xử lý
 
 ```
 1. Upload file sao kê (PDF/CSV/XLSX)
@@ -150,7 +150,7 @@ Frontend chạy tại: `http://localhost:3000`
 8. Đổ vào bảng ledgers (Sổ kế toán chính thức)
 ```
 
-## 🔧 Ví dụ Rules
+## Ví dụ Rules
 
 ### Rule: Lương nhân viên
 
@@ -193,7 +193,7 @@ Loại sổ:         CHI_PHI
 Dấu số tiền:     NEGATIVE (chi)
 ```
 
-## 🎨 Giao diện
+## Giao diện
 
 ### Tab Giao dịch
 
@@ -213,7 +213,7 @@ Dấu số tiền:     NEGATIVE (chi)
 - Form tạo/sửa rule
 - Bật/Tắt rule
 
-## 📌 Lưu ý
+## Lưu ý
 
 ### Nội dung giao dịch
 
@@ -232,14 +232,14 @@ Dấu số tiền:     NEGATIVE (chi)
 - **Dương (+)**: Thu tiền (credit)
 - **Âm (-)**: Chi tiền (debit)
 
-## 🔐 Bảo mật
+## Bảo mật
 
 - File upload giới hạn 20MB
 - Chỉ chấp nhận: PDF, CSV, XLSX, XLS
 - Validation dữ liệu trước khi insert DB
 - Prepared statements (SQL injection prevention)
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Lỗi kết nối database
 
@@ -267,7 +267,7 @@ lsof -ti:5000 | xargs kill -9
 lsof -ti:3000 | xargs kill -9
 ```
 
-## 📦 Build Production
+## Build Production
 
 ### Backend
 

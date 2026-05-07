@@ -83,11 +83,14 @@ router.delete("/:id", async (req, res) => {
 });
 
 // ─── GET /api/partners/ledger ─────────────────────────────────────────────────
-// Sổ chi tiết theo từng đối tác (nhóm giao dịch công nợ theo partner_name)
+// Sổ chi tiết theo từng đối tác (CHỈ GIAO DỊCH CÔNG NỢ)
 router.get("/ledger", async (req, res) => {
   const { partner_name, from_date, to_date } = req.query;
 
-  let where = ["l.partner_name IS NOT NULL AND l.partner_name != ''"];
+  let where = [
+    "l.partner_name IS NOT NULL AND l.partner_name != ''",
+    "l.ledger_type = 'CONG_NO'", // Chỉ lấy giao dịch công nợ
+  ];
   let params = [];
 
   if (partner_name) {
@@ -141,11 +144,14 @@ router.get("/ledger", async (req, res) => {
 });
 
 // ─── GET /api/partners/balance ────────────────────────────────────────────────
-// Tổng hợp số dư công nợ theo từng đối tác
+// Tổng hợp số dư công nợ theo từng đối tác (CHỈ LOẠI SỔ CÔNG NỢ)
 router.get("/balance", async (req, res) => {
   const { from_date, to_date } = req.query;
 
-  let where = ["l.partner_name IS NOT NULL AND l.partner_name != ''"];
+  let where = [
+    "l.partner_name IS NOT NULL AND l.partner_name != ''",
+    "l.ledger_type = 'CONG_NO'", // Chỉ lấy giao dịch công nợ
+  ];
   let params = [];
 
   if (from_date) {
@@ -170,6 +176,43 @@ router.get("/balance", async (req, res) => {
      ${whereClause}
      GROUP BY l.partner_name
      ORDER BY ABS(SUM(l.amount)) DESC`,
+    params,
+  );
+
+  res.json(rows);
+});
+
+// ─── GET /api/partners/transactions ───────────────────────────────────────────
+// Danh sách chi tiết từng giao dịch công nợ (không tổng hợp theo đối tác)
+router.get("/transactions", async (req, res) => {
+  const { from_date, to_date, partner_name } = req.query;
+
+  let where = [
+    "l.ledger_type = 'CONG_NO'", // Chỉ lấy giao dịch có gắn mác sổ công nợ
+  ];
+  let params = [];
+
+  if (from_date) {
+    where.push("l.entry_date >= ?");
+    params.push(from_date);
+  }
+  if (to_date) {
+    where.push("l.entry_date <= ?");
+    params.push(to_date);
+  }
+  if (partner_name) {
+    where.push("l.partner_name LIKE ?");
+    params.push(`%${partner_name}%`);
+  }
+
+  const whereClause = "WHERE " + where.join(" AND ");
+
+  const [rows] = await db.query(
+    `SELECT l.*, t.is_manual, t.upload_batch
+     FROM ledgers l
+     JOIN transactions t ON l.transaction_id = t.id
+     ${whereClause}
+     ORDER BY l.entry_date DESC, l.id DESC`,
     params,
   );
 

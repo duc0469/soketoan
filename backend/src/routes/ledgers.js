@@ -24,14 +24,15 @@ router.get("/", async (req, res) => {
   let params = [];
 
   // Filter theo loại sổ:
-  // - SO_CAI: Hiển thị TẤT CẢ (không filter)
-  // - CONG_NO: Chỉ hiển thị công nợ
+  // - SO_CAI: Hiển thị TẤT CẢ TRỪ CÔNG NỢ (công nợ có tab riêng)
+  // - CONG_NO: Không dùng nữa (đã có tab riêng "Số dư công nợ")
   // - CHI_PHI: Hiển thị tất cả TRỪ công nợ
   // - CHI_PHI_DUOC_TRU: Hiển thị chi phí (TRỪ công nợ) VÀ debit_account bắt đầu bằng 6
   // - TIEN_MAT: Chỉ hiển thị tiền mặt
   if (ledger_type) {
     if (ledger_type === "SO_CAI") {
-      // Sổ Cái: hiển thị tất cả, không filter
+      // Sổ Cái: hiển thị tất cả TRỪ công nợ
+      where.push("l.ledger_type != 'CONG_NO'");
     } else if (ledger_type === "CHI_PHI") {
       // Sổ Chi Phí: hiển thị tất cả TRỪ công nợ
       where.push("l.ledger_type != 'CONG_NO'");
@@ -43,11 +44,17 @@ router.get("/", async (req, res) => {
       where.push(
         "(l.description NOT LIKE '%nop thue%' AND l.description NOT LIKE '%ngan hang nha nuoc%' AND l.description NOT LIKE '%kho bac nha nuoc%' AND l.description NOT LIKE '%tam ung%' AND l.description NOT LIKE '%chuyen khoan noi bo%')",
       );
+    } else if (ledger_type === "CONG_NO") {
+      // Công nợ: không hiển thị ở đây nữa, có tab riêng
+      where.push("1 = 0"); // Trả về rỗng
     } else {
       // Các loại khác: filter chính xác
       where.push("l.ledger_type = ?");
       params.push(ledger_type);
     }
+  } else {
+    // Nếu không có filter, mặc định loại trừ công nợ
+    where.push("l.ledger_type != 'CONG_NO'");
   }
 
   if (from_date) {
@@ -92,7 +99,8 @@ router.get("/summary", async (req, res) => {
   // Apply ledger_type filter giống như GET /api/ledgers
   if (ledger_type) {
     if (ledger_type === "SO_CAI") {
-      // Sổ Cái: tất cả
+      // Sổ Cái: tất cả TRỪ công nợ
+      where.push("ledger_type != 'CONG_NO'");
     } else if (ledger_type === "CHI_PHI") {
       // Sổ Chi Phí: tất cả trừ công nợ
       where.push("ledger_type != 'CONG_NO'");
@@ -104,11 +112,17 @@ router.get("/summary", async (req, res) => {
       where.push(
         "(description NOT LIKE '%nop thue%' AND description NOT LIKE '%ngan hang nha nuoc%' AND description NOT LIKE '%kho bac nha nuoc%' AND description NOT LIKE '%tam ung%' AND description NOT LIKE '%chuyen khoan noi bo%')",
       );
+    } else if (ledger_type === "CONG_NO") {
+      // Công nợ: không hiển thị ở đây nữa
+      where.push("1 = 0"); // Trả về rỗng
     } else {
       // Các loại khác
       where.push("ledger_type = ?");
       params.push(ledger_type);
     }
+  } else {
+    // Nếu không có filter, mặc định loại trừ công nợ
+    where.push("ledger_type != 'CONG_NO'");
   }
 
   if (from_date) {

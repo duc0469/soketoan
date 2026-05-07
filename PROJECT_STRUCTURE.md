@@ -1,63 +1,63 @@
-# 📁 Project Structure
+# Project Structure
 
 ## Cấu trúc thư mục đầy đủ
 
 ```
 accounting-app/
 │
-├── 📄 README.md                    # Hướng dẫn tổng quan
-├── 📄 SETUP.md                     # Hướng dẫn cài đặt chi tiết
-├── 📄 API.md                       # API documentation
-├── 📄 ARCHITECTURE.md              # Kiến trúc hệ thống
-├── 📄 CHANGELOG.md                 # Lịch sử thay đổi
-├── 📄 CONTRIBUTING.md              # Hướng dẫn đóng góp
-├── 📄 LICENSE                      # MIT License
-├── 📄 .gitignore                   # Git ignore rules
-├── 📄 package.json                 # Root package.json (scripts)
+├── README.md                    # Hướng dẫn tổng quan
+├── SETUP.md                     # Hướng dẫn cài đặt chi tiết
+├── API.md                       # API documentation
+├── ARCHITECTURE.md              # Kiến trúc hệ thống
+├── CHANGELOG.md                 # Lịch sử thay đổi
+├── CONTRIBUTING.md              # Hướng dẫn đóng góp
+├── LICENSE                      # MIT License
+├── .gitignore                   # Git ignore rules
+├── package.json                 # Root package.json (scripts)
 │
-├── 📂 backend/                     # Backend Node.js
-│   ├── 📄 package.json             # Backend dependencies
-│   ├── 📄 .env.example             # Environment variables template
-│   └── 📂 src/
-│       ├── 📄 server.js            # Entry point
-│       ├── 📂 config/
-│       │   └── 📄 db.js            # MySQL connection pool
-│       ├── 📂 routes/
-│       │   ├── 📄 upload.js        # POST /api/upload
-│       │   ├── 📄 transactions.js  # CRUD transactions
-│       │   ├── 📄 ledgers.js       # GET ledgers & summary
-│       │   └── 📄 rules.js         # CRUD rules
-│       └── 📂 utils/
-│           ├── 📄 parser.js        # Parse PDF/CSV/XLSX
-│           └── 📄 ruleEngine.js    # Classification logic
+├── backend/                     # Backend Node.js
+│   ├── package.json             # Backend dependencies
+│   ├── .env.example             # Environment variables template
+│   └── src/
+│       ├── server.js            # Entry point
+│       ├── config/
+│       │   └── db.js            # MySQL connection pool
+│       ├── routes/
+│       │   ├── upload.js        # POST /api/upload
+│       │   ├── transactions.js  # CRUD transactions
+│       │   ├── ledgers.js       # GET ledgers & summary
+│       │   └── rules.js         # CRUD rules
+│       └── utils/
+│           ├── parser.js        # Parse PDF/CSV/XLSX
+│           └── ruleEngine.js    # Classification logic
 │
-├── 📂 frontend/                    # Frontend React
-│   ├── 📄 package.json             # Frontend dependencies
-│   ├── 📂 public/
-│   │   └── 📄 index.html           # HTML template
-│   └── 📂 src/
-│       ├── 📄 index.jsx            # Entry point
-│       ├── 📄 index.css            # Global styles
-│       ├── 📄 App.jsx              # Main app component
-│       ├── 📂 api/
-│       │   └── 📄 client.js        # Axios API client
-│       ├── 📂 components/
-│       │   ├── 📄 UploadZone.jsx   # File upload component
-│       │   ├── 📄 TransactionGrid.jsx      # Transaction table container
-│       │   ├── 📄 TransactionRow.jsx       # Transaction row component
-│       │   ├── 📄 TransactionToolbar.jsx   # Toolbar with actions
-│       │   ├── 📄 LedgerView.jsx           # Ledger view container
-│       │   ├── 📄 LedgerFilter.jsx         # Ledger filter component
-│       │   ├── 📄 LedgerSummary.jsx        # Ledger summary cards
-│       │   └── 📄 RulesManager.jsx         # Rules CRUD
-│       └── 📂 utils/
-│           └── 📄 format.js        # Format helpers
+├── frontend/                    # Frontend React
+│   ├── package.json             # Frontend dependencies
+│   ├── public/
+│   │   └── index.html           # HTML template
+│   └── src/
+│       ├── index.jsx            # Entry point
+│       ├── index.css            # Global styles
+│       ├── App.jsx              # Main app component
+│       ├── api/
+│       │   └── client.js        # Axios API client
+│       ├── components/
+│       │   ├── UploadZone.jsx   # File upload component
+│       │   ├── TransactionGrid.jsx      # Transaction table container
+│       │   ├── TransactionRow.jsx       # Transaction row component
+│       │   ├── TransactionToolbar.jsx   # Toolbar with actions
+│       │   ├── LedgerView.jsx           # Ledger view container
+│       │   ├── LedgerFilter.jsx         # Ledger filter component
+│       │   ├── LedgerSummary.jsx        # Ledger summary cards
+│       │   └── RulesManager.jsx         # Rules CRUD
+│       └── utils/
+│           └── format.js        # Format helpers
 │
-├── 📂 database/                    # Database
-│   └── 📄 schema.sql               # MySQL schema + seed data
+├── database/                    # Database
+│   └── schema.sql               # MySQL schema + seed data
 │
-└── 📂 sample-data/                 # Sample files
-    └── 📄 README.md                # Sample data guide
+└── sample-data/                 # Sample files
+    └── README.md                # Sample data guide
 ```
 
 ## File Descriptions

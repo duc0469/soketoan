@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 import LedgerSummary from "./LedgerSummary";
 import ExportButton from "./ExportButton";
 
-export default function DeductibleExpensesView({ refreshTrigger }) {
+export default function DeductibleExpensesView({ refreshTrigger, isActive }) {
   const [ledgers, setLedgers] = useState([]);
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -20,17 +20,18 @@ export default function DeductibleExpensesView({ refreshTrigger }) {
   });
 
   useEffect(() => {
-    // If refreshTrigger is negative, clear data (new file uploaded, no confirmation yet)
+    // Clear data when new file uploaded
     if (refreshTrigger < 0) {
       setLedgers([]);
       setSummary(null);
-    } else if (refreshTrigger > 0) {
-      // Only load data when refreshTrigger is positive (after confirmation)
-      // Don't load on initial mount (refreshTrigger = 0)
+      return;
+    }
+
+    // Load data when tab is active and there's confirmed data
+    if (isActive && refreshTrigger > 0) {
       loadData();
     }
-    // If refreshTrigger = 0 (initial state), do nothing (keep empty state)
-  }, [refreshTrigger]); // Reload when refreshTrigger changes
+  }, [refreshTrigger, isActive]);
 
   const loadData = async () => {
     setLoading(true);
@@ -60,7 +61,7 @@ export default function DeductibleExpensesView({ refreshTrigger }) {
       >
         <div>
           <h2 style={{ fontSize: 24, fontWeight: 700, margin: 0 }}>
-            💰 Chi Phí Được Trừ
+            Chi Phí Được Trừ
           </h2>
           <p style={{ color: "#6b7280", fontSize: 14, margin: "8px 0 0 0" }}>
             Các khoản chi phí được khấu trừ thuế (TK Nợ bắt đầu bằng 6)
@@ -105,7 +106,7 @@ export default function DeductibleExpensesView({ refreshTrigger }) {
         </div>
         <div style={{ display: "flex", alignItems: "flex-end" }}>
           <button onClick={loadData} style={btnStyle}>
-            🔍 Lọc
+            Lọc
           </button>
         </div>
       </div>

@@ -77,6 +77,8 @@ export const getPartnerLedger = (params) =>
   api.get("/partners/ledger", { params });
 export const getPartnerBalance = (params) =>
   api.get("/partners/balance", { params });
+export const getPartnerTransactions = (params) =>
+  api.get("/partners/transactions", { params });
 
 // ─── Export ───────────────────────────────────────────────────────────────────
 export const exportToExcel = (params) => {

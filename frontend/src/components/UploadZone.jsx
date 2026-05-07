@@ -24,16 +24,10 @@ export default function UploadZone({ onUploaded }) {
         toast.success(
           `Đã xử lý ${data.total_rows} giao dịch từ "${data.file_name}"`,
         );
-        // Cảnh báo số dư không khớp
-        if (data.balance_warning) {
-          toast.error(`⚠️ ${data.balance_warning}`, { duration: 8000 });
-        }
-        // Cảnh báo giao dịch trùng lặp
         if (data.duplicates && data.duplicates.length > 0) {
           toast(
-            `⚠️ Phát hiện ${data.duplicates.length} giao dịch có thể trùng lặp`,
+            `Phát hiện ${data.duplicates.length} giao dịch có thể trùng lặp`,
             {
-              icon: "⚠️",
               duration: 6000,
               style: {
                 background: "#fffbeb",
@@ -80,7 +74,6 @@ export default function UploadZone({ onUploaded }) {
           alignItems: "start",
         }}
       >
-        <span style={{ fontSize: 24 }}>⚠️</span>
         <div>
           <p style={{ fontWeight: 600, color: "#92400e", margin: 0 }}>
             Lưu ý quan trọng
@@ -113,7 +106,6 @@ export default function UploadZone({ onUploaded }) {
       >
         {loading ? (
           <div>
-            <div style={{ fontSize: 32, marginBottom: 8 }}>⏳</div>
             <p style={{ color: "#3b82f6", fontWeight: 600 }}>
               Đang xử lý... {progress}%
             </p>
@@ -138,7 +130,6 @@ export default function UploadZone({ onUploaded }) {
           </div>
         ) : (
           <>
-            <div style={{ fontSize: 48, marginBottom: 8 }}>📂</div>
             <p
               style={{
                 fontSize: 16,

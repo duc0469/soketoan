@@ -27,7 +27,7 @@ export default function TransactionToolbar({
           cursor: selectedCount > 0 ? "pointer" : "not-allowed",
         }}
       >
-        ✓ Xác nhận {selectedCount > 0 ? `(${selectedCount})` : ""}
+        Xác nhận {selectedCount > 0 ? `(${selectedCount})` : ""}
       </button>
       <span style={{ color: "#6b7280", fontSize: 14 }}>
         Tổng: {totalCount} giao dịch

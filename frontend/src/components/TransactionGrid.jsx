@@ -88,8 +88,13 @@ export default function TransactionGrid({
   };
 
   const toggleSelectAll = () => {
-    if (selected.size === paginated.length) setSelected(new Set());
-    else setSelected(new Set(paginated.map((t) => t.id)));
+    if (selected.size === filtered.length) {
+      // If all filtered transactions are selected, deselect all
+      setSelected(new Set());
+    } else {
+      // Select all filtered transactions (not just current page)
+      setSelected(new Set(filtered.map((t) => t.id)));
+    }
   };
 
   const handleConfirmSelected = () => {
@@ -119,7 +124,6 @@ export default function TransactionGrid({
   if (!transactions || transactions.length === 0) {
     return (
       <div style={{ textAlign: "center", padding: 60, color: "#9ca3af" }}>
-        <div style={{ fontSize: 48, marginBottom: 12 }}>📋</div>
         <p>Chưa có giao dịch nào. Hãy upload file sao kê.</p>
       </div>
     );
@@ -146,7 +150,7 @@ export default function TransactionGrid({
         >
           {/* Tìm kiếm nội dung */}
           <div>
-            <label style={labelStyle}>🔍 Tìm nội dung</label>
+            <label style={labelStyle}>Tìm nội dung</label>
             <input
               value={search}
               onChange={(e) => {
@@ -266,7 +270,7 @@ export default function TransactionGrid({
                 cursor: "pointer",
               }}
             >
-              ✕ Xóa bộ lọc
+              Xóa bộ lọc
             </button>
           </div>
         )}
@@ -296,14 +300,16 @@ export default function TransactionGrid({
                 <input
                   type="checkbox"
                   checked={
-                    paginated.length > 0 && selected.size === paginated.length
+                    filtered.length > 0 && selected.size === filtered.length
                   }
                   onChange={toggleSelectAll}
+                  title="Chọn tất cả giao dịch (tất cả các trang)"
                 />
               </th>
               <th style={thStyle}>Ngày</th>
               <th style={thStyle}>Nội dung</th>
-              <th style={thStyle}>Số tiền</th>
+              <th style={{ ...thStyle, textAlign: "right" }}>Tiền ra</th>
+              <th style={{ ...thStyle, textAlign: "right" }}>Tiền vào</th>
               <th style={thStyle}>TK Nợ</th>
               <th style={thStyle}>TK Có</th>
               <th style={thStyle}>Loại sổ</th>

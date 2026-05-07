@@ -103,7 +103,7 @@ export default function UserMenu({ user, onLogout, onUserUpdate }) {
             <div style={{ fontSize: 13, fontWeight: 600 }}>{displayName}</div>
             <div style={{ fontSize: 11, opacity: 0.8 }}>{user.email}</div>
           </div>
-          <span style={{ fontSize: 10, opacity: 0.7 }}>{open ? "▲" : "▼"}</span>
+          <span style={{ fontSize: 10, opacity: 0.7 }}>{open ? "^" : "v"}</span>
         </button>
 
         {/* Dropdown */}
@@ -141,7 +141,6 @@ export default function UserMenu({ user, onLogout, onUserUpdate }) {
             {/* Menu items */}
             {[
               {
-                icon: "✏️",
                 label: "Cập nhật tên",
                 action: () => {
                   setProfileName(user.full_name || "");
@@ -150,7 +149,6 @@ export default function UserMenu({ user, onLogout, onUserUpdate }) {
                 },
               },
               {
-                icon: "🔑",
                 label: "Đổi mật khẩu",
                 action: () => {
                   setModal("password");
@@ -158,7 +156,6 @@ export default function UserMenu({ user, onLogout, onUserUpdate }) {
                 },
               },
               {
-                icon: "🚪",
                 label: "Đăng xuất",
                 action: onLogout,
                 danger: true,
@@ -191,7 +188,6 @@ export default function UserMenu({ user, onLogout, onUserUpdate }) {
                   (e.currentTarget.style.background = "none")
                 }
               >
-                <span>{item.icon}</span>
                 <span>{item.label}</span>
               </button>
             ))}
@@ -201,7 +197,7 @@ export default function UserMenu({ user, onLogout, onUserUpdate }) {
 
       {/* ── Modal: Cập nhật tên ── */}
       {modal === "profile" && (
-        <Modal title="✏️ Cập nhật tên hiển thị" onClose={() => setModal(null)}>
+        <Modal title="Cập nhật tên hiển thị" onClose={() => setModal(null)}>
           <form onSubmit={handleUpdateProfile}>
             <label style={labelStyle}>Họ và tên</label>
             <input
@@ -217,7 +213,7 @@ export default function UserMenu({ user, onLogout, onUserUpdate }) {
                 disabled={loading}
                 style={btnStyle("#667eea")}
               >
-                {loading ? "⏳ Đang lưu..." : "💾 Lưu"}
+                {loading ? "Đang lưu..." : "Lưu"}
               </button>
               <button
                 type="button"
@@ -233,7 +229,7 @@ export default function UserMenu({ user, onLogout, onUserUpdate }) {
 
       {/* ── Modal: Đổi mật khẩu ── */}
       {modal === "password" && (
-        <Modal title="🔑 Đổi mật khẩu" onClose={() => setModal(null)}>
+        <Modal title="Đổi mật khẩu" onClose={() => setModal(null)}>
           <form onSubmit={handleChangePassword}>
             {[
               {
@@ -271,7 +267,7 @@ export default function UserMenu({ user, onLogout, onUserUpdate }) {
                 disabled={loading}
                 style={btnStyle("#667eea")}
               >
-                {loading ? "⏳ Đang lưu..." : "🔑 Đổi mật khẩu"}
+                {loading ? "Đang lưu..." : "Đổi mật khẩu"}
               </button>
               <button
                 type="button"

@@ -10,7 +10,7 @@ import LedgerFilter from "./LedgerFilter";
 import LedgerSummary from "./LedgerSummary";
 import ExportButton from "./ExportButton";
 
-export default function LedgerView({ refreshTrigger }) {
+export default function LedgerView({ refreshTrigger, isActive }) {
   const [ledgers, setLedgers] = useState([]);
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -21,17 +21,18 @@ export default function LedgerView({ refreshTrigger }) {
   });
 
   useEffect(() => {
-    // If refreshTrigger is negative, clear data (new file uploaded, no confirmation yet)
+    // Clear data when new file uploaded
     if (refreshTrigger < 0) {
       setLedgers([]);
       setSummary(null);
-    } else if (refreshTrigger > 0) {
-      // Only load data when refreshTrigger is positive (after confirmation)
-      // Don't load on initial mount (refreshTrigger = 0)
+      return;
+    }
+
+    // Load data when tab is active and there's confirmed data
+    if (isActive && refreshTrigger > 0) {
       loadData();
     }
-    // If refreshTrigger = 0 (initial state), do nothing (keep empty state)
-  }, [refreshTrigger]); // Reload when refreshTrigger changes
+  }, [refreshTrigger, isActive]);
 
   const loadData = async () => {
     setLoading(true);
@@ -59,9 +60,7 @@ export default function LedgerView({ refreshTrigger }) {
           marginBottom: 24,
         }}
       >
-        <h2 style={{ fontSize: 24, fontWeight: 700, margin: 0 }}>
-          📊 Sổ Kế Toán
-        </h2>
+        <h2 style={{ fontSize: 24, fontWeight: 700, margin: 0 }}>Sổ Kế Toán</h2>
         <ExportButton filters={filters} />
       </div>
 

@@ -93,7 +93,6 @@ export default function AuthPage({ onAuthSuccess }) {
       >
         {/* Logo / Title */}
         <div style={{ textAlign: "center", marginBottom: 32 }}>
-          <div style={{ fontSize: 48, marginBottom: 8 }}>📊</div>
           <h1
             style={{
               fontSize: 22,
@@ -250,10 +249,10 @@ export default function AuthPage({ onAuthSuccess }) {
             }}
           >
             {loading
-              ? "⏳ Đang xử lý..."
+              ? "Đang xử lý..."
               : mode === "login"
-                ? "🔐 Đăng nhập"
-                : "✅ Tạo tài khoản"}
+                ? "Đăng nhập"
+                : "Tạo tài khoản"}
           </button>
         </form>
 

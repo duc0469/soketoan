@@ -29,11 +29,10 @@ export const LEDGER_TYPE_LABELS = {
   TIEN_MAT: { label: "Tiền mặt", color: "#8b5cf6", bg: "#f5f3ff" },
 };
 
-// Labels cho filter dropdown (không bao gồm CHI_PHI_DUOC_TRU vì đã là tab riêng)
+// Labels cho filter dropdown (không bao gồm CHI_PHI_DUOC_TRU vì đã là tab riêng, bỏ CONG_NO vì có tab riêng)
 export const LEDGER_FILTER_OPTIONS = {
   SO_CAI: { label: "Sổ cái", color: "#3b82f6", bg: "#eff6ff" },
   CHI_PHI: { label: "Chi phí", color: "#ef4444", bg: "#fef2f2" },
-  CONG_NO: { label: "Công nợ", color: "#f59e0b", bg: "#fffbeb" },
   TIEN_MAT: { label: "Tiền mặt", color: "#8b5cf6", bg: "#f5f3ff" },
 };
 

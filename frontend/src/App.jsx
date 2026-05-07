@@ -7,6 +7,7 @@ import LedgerView from "./components/LedgerView";
 import DeductibleExpensesView from "./components/DeductibleExpensesView";
 import RulesManager from "./components/RulesManager";
 import PartnersManager from "./components/PartnersManager";
+import PartnerBalanceView from "./components/PartnerBalanceView";
 import AuthPage from "./components/AuthPage";
 import UserMenu from "./components/UserMenu";
 import {
@@ -88,6 +89,8 @@ function App() {
         ),
       );
       setLedgerRefreshTrigger((prev) => prev + 1);
+      // Tự động chuyển sang tab Sổ kế toán sau khi xác nhận
+      setActiveTab("ledgers");
     } catch {
       toast.error("Không thể xác nhận");
     }
@@ -137,7 +140,7 @@ function App() {
         >
           <div>
             <h1 style={{ fontSize: 24, fontWeight: 700, margin: 0 }}>
-              📊 Hệ Thống Kế Toán Tự Động
+              Hệ Thống Kế Toán Tự Động
             </h1>
             <p style={{ margin: "4px 0 0", opacity: 0.85, fontSize: 13 }}>
               Upload sao kê → Phân loại tự động → Xác nhận → Sổ kế toán
@@ -160,11 +163,12 @@ function App() {
         >
           <div style={{ display: "flex", gap: 4, overflowX: "auto" }}>
             {[
-              { id: "transactions", label: "📊 Giao dịch" },
-              { id: "ledgers", label: "📚 Sổ kế toán" },
-              { id: "deductible", label: "💰 Chi phí được trừ" },
-              { id: "partners", label: "🤝 Đối tác" },
-              { id: "rules", label: "⚙️ Rules" },
+              { id: "transactions", label: "Giao dịch" },
+              { id: "ledgers", label: "Sổ kế toán" },
+              { id: "deductible", label: "Chi phí được trừ" },
+              { id: "balance", label: "Số dư công nợ" },
+              { id: "partners", label: "Đối tác" },
+              { id: "rules", label: "Rules" },
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -226,7 +230,10 @@ function App() {
                 boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
               }}
             >
-              <LedgerView refreshTrigger={ledgerRefreshTrigger} />
+              <LedgerView
+                refreshTrigger={ledgerRefreshTrigger}
+                isActive={activeTab === "ledgers"}
+              />
             </div>
           )}
 
@@ -238,7 +245,25 @@ function App() {
                 boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
               }}
             >
-              <DeductibleExpensesView refreshTrigger={ledgerRefreshTrigger} />
+              <DeductibleExpensesView
+                refreshTrigger={ledgerRefreshTrigger}
+                isActive={activeTab === "deductible"}
+              />
+            </div>
+          )}
+
+          {activeTab === "balance" && (
+            <div
+              style={{
+                background: "#fff",
+                borderRadius: 12,
+                boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+              }}
+            >
+              <PartnerBalanceView
+                refreshTrigger={ledgerRefreshTrigger}
+                isActive={activeTab === "balance"}
+              />
             </div>
           )}
 
@@ -250,7 +275,7 @@ function App() {
                 boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
               }}
             >
-              <PartnersManager refreshTrigger={ledgerRefreshTrigger} />
+              <PartnersManager />
             </div>
           )}
 

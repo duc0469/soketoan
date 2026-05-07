@@ -112,7 +112,7 @@ export default function TransactionRow({
                   fontWeight: 600,
                 }}
               >
-                🤝 {transaction.partner_name}
+                {transaction.partner_name}
               </span>
             </div>
           )}
@@ -125,16 +125,31 @@ export default function TransactionRow({
                 fontStyle: "italic",
               }}
             >
-              📝 {transaction.note}
+              {transaction.note}
             </div>
           )}
         </td>
-        <td style={{ ...tdStyle, textAlign: "right", fontWeight: 600 }}>
-          <span
-            style={{ color: transaction.amount >= 0 ? "#10b981" : "#ef4444" }}
-          >
-            {formatCurrency(transaction.amount)}
-          </span>
+        <td
+          style={{
+            ...tdStyle,
+            textAlign: "right",
+            fontWeight: 600,
+            color: "#ef4444",
+          }}
+        >
+          {transaction.amount < 0
+            ? formatCurrency(Math.abs(transaction.amount))
+            : ""}
+        </td>
+        <td
+          style={{
+            ...tdStyle,
+            textAlign: "right",
+            fontWeight: 600,
+            color: "#10b981",
+          }}
+        >
+          {transaction.amount >= 0 ? formatCurrency(transaction.amount) : ""}
         </td>
         <td style={tdStyle}>
           {isEditing ? (
@@ -217,7 +232,7 @@ export default function TransactionRow({
               style={{ marginLeft: 4, fontSize: 10, color: "#f59e0b" }}
               title="Đã sửa tay"
             >
-              ✏️
+              *
             </span>
           )}
         </td>
@@ -226,10 +241,10 @@ export default function TransactionRow({
             <div>
               <div style={{ display: "flex", gap: 4, marginBottom: 4 }}>
                 <button onClick={onSave} style={btnStyle("#10b981")}>
-                  💾
+                  Lưu
                 </button>
                 <button onClick={onCancel} style={btnStyle("#6b7280")}>
-                  ✕
+                  Hủy
                 </button>
               </div>
               <textarea
@@ -257,7 +272,7 @@ export default function TransactionRow({
                 style={btnStyle(isConfirmed ? "#d1d5db" : "#3b82f6")}
                 title="Sửa"
               >
-                ✏️
+                Sửa
               </button>
               <button
                 onClick={() => onDelete(transaction.id)}
@@ -265,14 +280,14 @@ export default function TransactionRow({
                 style={btnStyle(isConfirmed ? "#d1d5db" : "#ef4444")}
                 title="Xóa"
               >
-                🗑️
+                Xóa
               </button>
               <button
                 onClick={handleShowLogs}
                 style={btnStyle("#8b5cf6")}
                 title="Lịch sử thay đổi"
               >
-                📋
+                Lịch sử
               </button>
               {transaction.is_manual === 1 && !isConfirmed && (
                 <button
@@ -280,7 +295,7 @@ export default function TransactionRow({
                   style={btnStyle("#f59e0b")}
                   title="Tạo rule từ giao dịch này"
                 >
-                  💡
+                  Tạo rule
                 </button>
               )}
             </div>
@@ -292,7 +307,7 @@ export default function TransactionRow({
       {showLogs && (
         <tr style={{ borderBottom: "1px solid #e5e7eb" }}>
           <td
-            colSpan={9}
+            colSpan={10}
             style={{ padding: "8px 16px", background: "#f5f3ff" }}
           >
             <div
@@ -303,7 +318,7 @@ export default function TransactionRow({
                 marginBottom: 6,
               }}
             >
-              📋 Lịch sử thay đổi
+              Lịch sử thay đổi
             </div>
             {loadingLogs ? (
               <div style={{ color: "#9ca3af", fontSize: 12 }}>Đang tải...</div>
@@ -363,7 +378,7 @@ export default function TransactionRow({
       {showSuggest && suggestedRule && (
         <tr style={{ borderBottom: "1px solid #e5e7eb" }}>
           <td
-            colSpan={9}
+            colSpan={10}
             style={{
               padding: "12px 16px",
               background: "#fffbeb",
@@ -378,7 +393,7 @@ export default function TransactionRow({
                 marginBottom: 8,
               }}
             >
-              💡 Gợi ý tạo rule mới từ giao dịch này
+              Gợi ý tạo rule mới từ giao dịch này
             </div>
             <div
               style={{

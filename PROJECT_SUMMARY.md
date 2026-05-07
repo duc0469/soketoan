@@ -1,6 +1,6 @@
-# 📊 Tóm Tắt Dự Án - Hệ Thống Kế Toán Tự Động
+# Tóm Tắt Dự Án - Hệ Thống Kế Toán Tự Động
 
-## 🎯 Mục Đích
+## Mục Đích
 
 Hệ thống kế toán tự động giúp doanh nghiệp:
 
@@ -11,7 +11,7 @@ Hệ thống kế toán tự động giúp doanh nghiệp:
 
 ---
 
-## 🏗️ Kiến Trúc
+## Kiến Trúc
 
 ### Tech Stack
 
@@ -36,7 +36,7 @@ Hệ thống kế toán tự động giúp doanh nghiệp:
 
 ---
 
-## 📁 Cấu Trúc Dự Án
+## Cấu Trúc Dự Án
 
 ```
 accounting-system/
@@ -96,7 +96,7 @@ accounting-system/
 
 ---
 
-## 🚀 Tính Năng Chính
+## Tính Năng Chính
 
 ### 1. Upload & Parse
 
@@ -145,7 +145,7 @@ accounting-system/
 
 ---
 
-## 📊 Database Schema
+## Database Schema
 
 ### Tables
 
@@ -164,7 +164,7 @@ rules (1) ──→ (N) transactions (via rule_id)
 
 ---
 
-## 🎨 UI/UX Highlights
+## UI/UX Highlights
 
 ### Navigation
 
@@ -174,21 +174,21 @@ rules (1) ──→ (N) transactions (via rule_id)
 
 ### Color Coding
 
-- 🔴 **Chi phí**: Red (#ef4444)
-- 🔵 **Sổ cái**: Blue (#3b82f6)
-- 🟡 **Công nợ**: Orange (#f59e0b)
-- 🟣 **Tiền mặt**: Purple (#8b5cf6)
-- 🟢 **Tiền vào**: Green (#10b981)
+- **Chi phí**: Red (#ef4444)
+- **Sổ cái**: Blue (#3b82f6)
+- **Công nợ**: Orange (#f59e0b)
+- **Tiền mặt**: Purple (#8b5cf6)
+- **Tiền vào**: Green (#10b981)
 
 ### Status Badges
 
-- 🟡 **PENDING**: Chờ xác nhận
-- 🟢 **CONFIRMED**: Đã xác nhận
-- 🔴 **REJECTED**: Từ chối
+- **PENDING**: Chờ xác nhận
+- **CONFIRMED**: Đã xác nhận
+- **REJECTED**: Từ chối
 
 ---
 
-## 🔄 Workflow
+## Workflow
 
 ### User Flow
 
