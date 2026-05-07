@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 import UploadZone from "./components/UploadZone";
@@ -7,6 +7,8 @@ import LedgerView from "./components/LedgerView";
 import DeductibleExpensesView from "./components/DeductibleExpensesView";
 import RulesManager from "./components/RulesManager";
 import PartnersManager from "./components/PartnersManager";
+import AuthPage from "./components/AuthPage";
+import UserMenu from "./components/UserMenu";
 import {
   updateTransaction,
   confirmTransactions,
@@ -17,17 +19,52 @@ import toast from "react-hot-toast";
 const queryClient = new QueryClient();
 
 function App() {
+  const [user, setUser] = useState(null);
+  const [authChecked, setAuthChecked] = useState(false);
+
   const [activeTab, setActiveTab] = useState("transactions");
   const [transactions, setTransactions] = useState([]);
   const [currentBatch, setCurrentBatch] = useState(null);
   const [ledgerRefreshTrigger, setLedgerRefreshTrigger] = useState(0);
 
+  // ── Khôi phục session từ localStorage khi load trang ──────────────────────
+  useEffect(() => {
+    const token = localStorage.getItem("auth_token");
+    const savedUser = localStorage.getItem("auth_user");
+    if (token && savedUser) {
+      try {
+        setUser(JSON.parse(savedUser));
+      } catch {
+        localStorage.removeItem("auth_token");
+        localStorage.removeItem("auth_user");
+      }
+    }
+    setAuthChecked(true);
+  }, []);
+
+  const handleAuthSuccess = (userData) => {
+    setUser(userData);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("auth_token");
+    localStorage.removeItem("auth_user");
+    setUser(null);
+    setTransactions([]);
+    setCurrentBatch(null);
+    setLedgerRefreshTrigger(0);
+    toast.success("Đã đăng xuất");
+  };
+
+  const handleUserUpdate = (updatedUser) => {
+    setUser(updatedUser);
+    localStorage.setItem("auth_user", JSON.stringify(updatedUser));
+  };
+
   const handleUploaded = (data) => {
     setTransactions(data.transactions);
     setCurrentBatch(data.batch_id);
     setActiveTab("transactions");
-    // Reset ledger refresh trigger when new file is uploaded
-    // Always set to -1 to clear ledger data
     setLedgerRefreshTrigger(-1);
   };
 
@@ -36,7 +73,7 @@ function App() {
       const { data: updated } = await updateTransaction(id, data);
       setTransactions((prev) => prev.map((t) => (t.id === id ? updated : t)));
       toast.success("Đã cập nhật giao dịch");
-    } catch (err) {
+    } catch {
       toast.error("Không thể cập nhật");
     }
   };
@@ -45,15 +82,13 @@ function App() {
     try {
       await confirmTransactions({ ids });
       toast.success(`Đã xác nhận ${ids.length} giao dịch`);
-      // Reload transactions
       setTransactions((prev) =>
         prev.map((t) =>
           ids.includes(t.id) ? { ...t, status: "CONFIRMED" } : t,
         ),
       );
-      // Trigger ledger data reload
       setLedgerRefreshTrigger((prev) => prev + 1);
-    } catch (err) {
+    } catch {
       toast.error("Không thể xác nhận");
     }
   };
@@ -64,11 +99,25 @@ function App() {
       await deleteTransaction(id);
       setTransactions((prev) => prev.filter((t) => t.id !== id));
       toast.success("Đã xóa giao dịch");
-    } catch (err) {
+    } catch {
       toast.error("Không thể xóa");
     }
   };
 
+  // ── Chờ kiểm tra auth xong mới render ─────────────────────────────────────
+  if (!authChecked) return null;
+
+  // ── Chưa đăng nhập → hiện trang auth ──────────────────────────────────────
+  if (!user) {
+    return (
+      <QueryClientProvider client={queryClient}>
+        <Toaster position="top-right" />
+        <AuthPage onAuthSuccess={handleAuthSuccess} />
+      </QueryClientProvider>
+    );
+  }
+
+  // ── Đã đăng nhập → hiện app chính ─────────────────────────────────────────
   return (
     <QueryClientProvider client={queryClient}>
       <div style={{ minHeight: "100vh", background: "#f3f4f6" }}>
@@ -79,16 +128,26 @@ function App() {
           style={{
             background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
             color: "#fff",
-            padding: "24px 32px",
+            padding: "16px 32px",
             boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
           }}
         >
-          <h1 style={{ fontSize: 28, fontWeight: 700, margin: 0 }}>
-            Hệ Thống Kế Toán Tự Động
-          </h1>
-          <p style={{ margin: "8px 0 0", opacity: 0.9, fontSize: 14 }}>
-            Upload sao kê → Phân loại tự động → Xác nhận → Sổ kế toán
-          </p>
+          <div>
+            <h1 style={{ fontSize: 24, fontWeight: 700, margin: 0 }}>
+              📊 Hệ Thống Kế Toán Tự Động
+            </h1>
+            <p style={{ margin: "4px 0 0", opacity: 0.85, fontSize: 13 }}>
+              Upload sao kê → Phân loại tự động → Xác nhận → Sổ kế toán
+            </p>
+          </div>
+          <UserMenu
+            user={user}
+            onLogout={handleLogout}
+            onUserUpdate={handleUserUpdate}
+          />
         </header>
 
         {/* Tabs */}
@@ -99,7 +158,7 @@ function App() {
             padding: "0 32px",
           }}
         >
-          <div style={{ display: "flex", gap: 8 }}>
+          <div style={{ display: "flex", gap: 4, overflowX: "auto" }}>
             {[
               { id: "transactions", label: "📊 Giao dịch" },
               { id: "ledgers", label: "📚 Sổ kế toán" },
@@ -111,7 +170,7 @@ function App() {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 style={{
-                  padding: "16px 24px",
+                  padding: "14px 20px",
                   background: "transparent",
                   border: "none",
                   borderBottom:
@@ -120,9 +179,10 @@ function App() {
                       : "3px solid transparent",
                   color: activeTab === tab.id ? "#667eea" : "#6b7280",
                   fontWeight: activeTab === tab.id ? 700 : 500,
-                  fontSize: 15,
+                  fontSize: 14,
                   cursor: "pointer",
                   transition: "all 0.2s",
+                  whiteSpace: "nowrap",
                 }}
               >
                 {tab.label}
@@ -182,18 +242,6 @@ function App() {
             </div>
           )}
 
-          {activeTab === "rules" && (
-            <div
-              style={{
-                background: "#fff",
-                borderRadius: 12,
-                boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
-              }}
-            >
-              <RulesManager />
-            </div>
-          )}
-
           {activeTab === "partners" && (
             <div
               style={{
@@ -205,6 +253,18 @@ function App() {
               <PartnersManager refreshTrigger={ledgerRefreshTrigger} />
             </div>
           )}
+
+          {activeTab === "rules" && (
+            <div
+              style={{
+                background: "#fff",
+                borderRadius: 12,
+                boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+              }}
+            >
+              <RulesManager />
+            </div>
+          )}
         </main>
 
         {/* Footer */}
@@ -213,12 +273,10 @@ function App() {
             textAlign: "center",
             padding: 24,
             color: "#9ca3af",
-            fontSize: 14,
+            fontSize: 13,
           }}
         >
-          <p>
-            © 2026 Hệ Thống Kế Toán Tự Động | Powered by React + Node.js + MySQL
-          </p>
+          <p>© 2026 Hệ Thống Kế Toán Tự Động | React + Node.js + MySQL</p>
         </footer>
       </div>
     </QueryClientProvider>

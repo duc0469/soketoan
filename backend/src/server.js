@@ -11,6 +11,8 @@ const ledgerRoutes = require("./routes/ledgers");
 const ruleRoutes = require("./routes/rules");
 const exportRoutes = require("./routes/export");
 const partnerRoutes = require("./routes/partners");
+const authRoutes = require("./routes/auth");
+const authMiddleware = require("./middleware/auth");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -21,12 +23,16 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 
 // ─── Routes ───────────────────────────────────────────────────────────────────
-app.use("/api/upload", uploadRoutes);
-app.use("/api/transactions", transactionRoutes);
-app.use("/api/ledgers", ledgerRoutes);
-app.use("/api/rules", ruleRoutes);
-app.use("/api/export", exportRoutes);
-app.use("/api/partners", partnerRoutes);
+// Public routes (không cần đăng nhập)
+app.use("/api/auth", authRoutes);
+
+// Protected routes (cần đăng nhập)
+app.use("/api/upload", authMiddleware, uploadRoutes);
+app.use("/api/transactions", authMiddleware, transactionRoutes);
+app.use("/api/ledgers", authMiddleware, ledgerRoutes);
+app.use("/api/rules", authMiddleware, ruleRoutes);
+app.use("/api/export", authMiddleware, exportRoutes);
+app.use("/api/partners", authMiddleware, partnerRoutes);
 
 // Health check
 app.get("/api/health", (req, res) =>
