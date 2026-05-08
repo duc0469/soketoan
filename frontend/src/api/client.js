@@ -79,6 +79,7 @@ export const getPartnerBalance = (params) =>
   api.get("/partners/balance", { params });
 export const getPartnerTransactions = (params) =>
   api.get("/partners/transactions", { params });
+export const testPartnerMatch = (data) => api.post("/partners/test", data);
 
 // ─── Export ───────────────────────────────────────────────────────────────────
 export const exportToExcel = (params) => {

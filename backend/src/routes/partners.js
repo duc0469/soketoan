@@ -11,6 +11,7 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../config/db");
+const { clearRuleCache, matchPartner } = require("../utils/ruleEngine");
 
 // ─── GET /api/partners ────────────────────────────────────────────────────────
 router.get("/", async (req, res) => {
@@ -18,6 +19,27 @@ router.get("/", async (req, res) => {
     "SELECT * FROM partners ORDER BY partner_name ASC",
   );
   res.json(rows);
+});
+
+// ─── POST /api/partners/test ──────────────────────────────────────────────────
+// Test partner matching với description
+router.post("/test", async (req, res) => {
+  const { description } = req.body;
+  if (!description) {
+    return res.status(400).json({ error: "Thiếu nội dung giao dịch" });
+  }
+
+  try {
+    const partner_name = await matchPartner(description);
+    res.json({
+      description: description.toUpperCase(),
+      matched_partner: partner_name,
+      success: !!partner_name,
+    });
+  } catch (error) {
+    console.error("[PARTNER TEST ERROR]", error);
+    res.status(500).json({ error: "Lỗi khi test partner matching" });
+  }
 });
 
 // ─── POST /api/partners ───────────────────────────────────────────────────────
@@ -39,6 +61,10 @@ router.post("/", async (req, res) => {
   const [[created]] = await db.query("SELECT * FROM partners WHERE id = ?", [
     result.insertId,
   ]);
+
+  // Clear cache để load partners mới
+  clearRuleCache();
+
   res.status(201).json(created);
 });
 
@@ -67,6 +93,10 @@ router.put("/:id", async (req, res) => {
   const [[updated]] = await db.query("SELECT * FROM partners WHERE id = ?", [
     id,
   ]);
+
+  // Clear cache để load partners đã update
+  clearRuleCache();
+
   res.json(updated);
 });
 
@@ -79,6 +109,10 @@ router.delete("/:id", async (req, res) => {
   if (!existing.length)
     return res.status(404).json({ error: "Không tìm thấy đối tác" });
   await db.query("DELETE FROM partners WHERE id = ?", [id]);
+
+  // Clear cache để xóa partner khỏi cache
+  clearRuleCache();
+
   res.json({ message: "Đã xóa đối tác" });
 });
 
@@ -217,6 +251,13 @@ router.get("/transactions", async (req, res) => {
   );
 
   res.json(rows);
+});
+
+// ─── POST /api/partners/clear-cache ───────────────────────────────────────────
+// Force clear cache (for debugging)
+router.post("/clear-cache", async (req, res) => {
+  clearRuleCache();
+  res.json({ message: "Cache cleared successfully" });
 });
 
 module.exports = router;

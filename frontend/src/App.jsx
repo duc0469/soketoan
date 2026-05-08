@@ -300,9 +300,7 @@ function App() {
             color: "#9ca3af",
             fontSize: 13,
           }}
-        >
-          <p>© 2026 Hệ Thống Kế Toán Tự Động | React + Node.js + MySQL</p>
-        </footer>
+        ></footer>
       </div>
     </QueryClientProvider>
   );

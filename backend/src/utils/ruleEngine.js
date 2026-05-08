@@ -39,29 +39,32 @@ function extractFeeType(description) {
 // ─── Load rules từ DB ─────────────────────────────────────────────────────────
 let cachedRules = null;
 let cachedPartners = null;
-let cacheTime = 0;
+let rulesCacheTime = 0;
+let partnersCacheTime = 0;
 const CACHE_TTL = 60 * 1000; // 1 phút
 
 async function loadRules() {
   const now = Date.now();
-  if (cachedRules && now - cacheTime < CACHE_TTL) return cachedRules;
+  if (cachedRules && now - rulesCacheTime < CACHE_TTL) return cachedRules;
 
   const [rows] = await db.query(
     "SELECT * FROM accounting_rules WHERE is_active = 1 ORDER BY priority ASC",
   );
   cachedRules = rows;
-  cacheTime = now;
+  rulesCacheTime = now;
   return rows;
 }
 
 async function loadPartners() {
   const now = Date.now();
-  if (cachedPartners && now - cacheTime < CACHE_TTL) return cachedPartners;
+  if (cachedPartners && now - partnersCacheTime < CACHE_TTL)
+    return cachedPartners;
 
   const [rows] = await db.query(
     "SELECT * FROM partners WHERE is_active = 1 ORDER BY partner_name ASC",
   );
   cachedPartners = rows;
+  partnersCacheTime = now;
   return rows;
 }
 
@@ -69,20 +72,35 @@ async function loadPartners() {
 function clearRuleCache() {
   cachedRules = null;
   cachedPartners = null;
+  rulesCacheTime = 0;
+  partnersCacheTime = 0;
 }
 
 // ─── Partner Mapping: Nhận diện tên đối tác từ nội dung ─────────────────────
 async function matchPartner(description) {
   const partners = await loadPartners();
   const desc = String(description || "").toUpperCase();
+
+  console.log(`[PARTNER MATCH] Checking description: "${desc}"`);
+  console.log(`[PARTNER MATCH] Available partners: ${partners.length}`);
+
   for (const partner of partners) {
     const keywords = partner.keywords
       .split("|")
       .map((k) => k.trim().toUpperCase());
-    if (keywords.some((kw) => kw && desc.includes(kw))) {
+
+    console.log(
+      `[PARTNER MATCH] Partner "${partner.partner_name}" keywords: [${keywords.join(", ")}]`,
+    );
+
+    const matched = keywords.some((kw) => kw && desc.includes(kw));
+    if (matched) {
+      console.log(`[PARTNER MATCH] ✅ MATCHED: "${partner.partner_name}"`);
       return partner.partner_name;
     }
   }
+
+  console.log(`[PARTNER MATCH] ❌ No partner matched`);
   return null;
 }
 

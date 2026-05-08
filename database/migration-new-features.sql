@@ -55,4 +55,5 @@ INSERT INTO partners (partner_name, keywords, default_account, partner_type) VAL
 ('Viettel',                'VIETTEL|VIETTEL TELECOM',              '642', 'NCC'),
 ('Kho bạc Nhà nước',       'KHO BAC|KBNN|KHO BAC NHA NUOC',       '333', 'KHAC'),
 ('Bảo hiểm xã hội',        'BHXH|BAO HIEM XA HOI',                '338', 'KHAC'),
-('Ngân hàng (phí DV)',     'PHI CHUYEN TIEN|PHI SMS|PHI QUAN LY', '642', 'NGAN_HANG');
+('Ngân hàng (phí DV)',     'PHI CHUYEN TIEN|PHI SMS|PHI QUAN LY', '642', 'NGAN_HANG'),
+('Cảng',                   'CANG|CANG BIEN|CANG CONTAINER',       '331', 'NCC');
