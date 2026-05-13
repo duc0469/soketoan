@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
-import UploadZone from "./components/UploadZone";
-import TransactionGrid from "./components/TransactionGrid";
-import LedgerView from "./components/LedgerView";
-import DeductibleExpensesView from "./components/DeductibleExpensesView";
-import RulesManager from "./components/RulesManager";
-import PartnersManager from "./components/PartnersManager";
-import PartnerBalanceView from "./components/PartnerBalanceView";
-import AuthPage from "./components/AuthPage";
-import UserMenu from "./components/UserMenu";
+import {
+  UploadZone,
+  TransactionGrid,
+  LedgerView,
+  DeductibleExpensesView,
+  RulesManager,
+  PartnersManager,
+  PartnerBalanceView,
+  AuthPage,
+  UserMenu,
+} from "./components";
 import {
   updateTransaction,
   confirmTransactions,

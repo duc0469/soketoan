@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { login, register } from "../api/client";
+import { login, register } from "../../api/client";
 import toast from "react-hot-toast";
 
 export default function AuthPage({ onAuthSuccess }) {

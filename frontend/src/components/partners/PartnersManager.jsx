@@ -4,7 +4,7 @@ import {
   createPartner,
   updatePartner,
   deletePartner,
-} from "../api/client";
+} from "../../api/client";
 import toast from "react-hot-toast";
 
 const PARTNER_TYPE_LABELS = {

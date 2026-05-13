@@ -10,12 +10,117 @@ const express = require("express");
 const router = express.Router();
 const db = require("../config/db");
 const { clearRuleCache } = require("../utils/ruleEngine");
+const {
+  getSuggestions,
+  isLikelyTypo,
+  getCommonKeywordsByType,
+} = require("../utils/spellChecker");
 
 router.get("/", async (req, res) => {
   const [rows] = await db.query(
     "SELECT * FROM accounting_rules ORDER BY priority ASC",
   );
   res.json(rows);
+});
+
+// API để kiểm tra gợi ý từ khóa (không cần auth cho test)
+router.post("/test-suggestions", async (req, res) => {
+  try {
+    const { keywords, ledgerType } = req.body;
+
+    if (!keywords) {
+      return res.status(400).json({ error: "Thiếu từ khóa để kiểm tra" });
+    }
+
+    // Tách các từ khóa (phân cách bởi |)
+    const keywordList = keywords
+      .split("|")
+      .map((k) => k.trim())
+      .filter((k) => k);
+    const results = [];
+
+    for (const keyword of keywordList) {
+      const typoCheck = isLikelyTypo(keyword);
+      const suggestions = getSuggestions(keyword);
+
+      results.push({
+        original: keyword,
+        isLikelyTypo: typoCheck.isTypo,
+        suggestions: typoCheck.suggestions,
+        allSuggestions: suggestions.map((s) => s.keyword),
+      });
+    }
+
+    // Lấy từ khóa phổ biến theo loại sổ
+    const commonKeywords = ledgerType
+      ? getCommonKeywordsByType(ledgerType)
+      : [];
+
+    res.json({
+      results,
+      commonKeywords,
+      hasTypos: results.some((r) => r.isLikelyTypo),
+    });
+  } catch (error) {
+    console.error("Error checking suggestions:", error);
+    res.status(500).json({ error: "Lỗi khi kiểm tra gợi ý" });
+  }
+});
+
+// API để kiểm tra gợi ý từ khóa
+router.post("/suggestions", async (req, res) => {
+  try {
+    const { keywords, ledgerType } = req.body;
+
+    if (!keywords) {
+      return res.status(400).json({ error: "Thiếu từ khóa để kiểm tra" });
+    }
+
+    // Tách các từ khóa (phân cách bởi |)
+    const keywordList = keywords
+      .split("|")
+      .map((k) => k.trim())
+      .filter((k) => k);
+    const results = [];
+
+    for (const keyword of keywordList) {
+      const typoCheck = isLikelyTypo(keyword);
+      const suggestions = getSuggestions(keyword);
+
+      results.push({
+        original: keyword,
+        isLikelyTypo: typoCheck.isTypo,
+        suggestions: typoCheck.suggestions,
+        allSuggestions: suggestions.map((s) => s.keyword),
+      });
+    }
+
+    // Lấy từ khóa phổ biến theo loại sổ
+    const commonKeywords = ledgerType
+      ? getCommonKeywordsByType(ledgerType)
+      : [];
+
+    res.json({
+      results,
+      commonKeywords,
+      hasTypos: results.some((r) => r.isLikelyTypo),
+    });
+  } catch (error) {
+    console.error("Error checking suggestions:", error);
+    res.status(500).json({ error: "Lỗi khi kiểm tra gợi ý" });
+  }
+});
+
+// API để lấy từ khóa phổ biến theo loại sổ
+router.get("/common-keywords/:ledgerType", async (req, res) => {
+  try {
+    const { ledgerType } = req.params;
+    const keywords = getCommonKeywordsByType(ledgerType);
+    res.json({ keywords });
+  } catch (error) {
+    console.error("Error getting common keywords:", error);
+    res.status(500).json({ error: "Lỗi khi lấy từ khóa phổ biến" });
+  }
 });
 
 router.post("/", async (req, res) => {

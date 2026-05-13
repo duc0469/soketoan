@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { getPartnerTransactions } from "../api/client";
-import { formatCurrency, formatDate } from "../utils/format";
+import { getPartnerTransactions } from "../../api/client";
+import { formatCurrency, formatDate } from "../../utils/format";
 import toast from "react-hot-toast";
 
 export default function PartnerBalanceView({ refreshTrigger, isActive }) {

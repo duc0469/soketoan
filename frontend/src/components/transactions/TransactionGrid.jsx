@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import TransactionRow from "./TransactionRow";
 import TransactionToolbar from "./TransactionToolbar";
-import { LEDGER_TYPE_LABELS } from "../utils/format";
+import { LEDGER_TYPE_LABELS } from "../../utils/format";
 
 const PAGE_SIZE = 50;
 

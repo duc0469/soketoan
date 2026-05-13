@@ -1,5 +1,5 @@
 import React from "react";
-import { formatCurrency, LEDGER_TYPE_LABELS } from "../utils/format";
+import { formatCurrency, LEDGER_TYPE_LABELS } from "../../utils/format";
 
 export default function LedgerSummary({ summary }) {
   if (!summary) return null;

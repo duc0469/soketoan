@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { updateProfile, changePassword } from "../api/client";
+import { updateProfile, changePassword } from "../../api/client";
 import toast from "react-hot-toast";
 
 export default function UserMenu({ user, onLogout, onUserUpdate }) {

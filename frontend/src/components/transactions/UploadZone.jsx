@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import toast from "react-hot-toast";
-import { uploadFile } from "../api/client";
+import { uploadFile } from "../../api/client";
 
 const ACCEPTED = ".pdf,.csv,.xlsx,.xls";
 

@@ -4,8 +4,8 @@ import {
   formatDate,
   LEDGER_TYPE_LABELS,
   STATUS_LABELS,
-} from "../utils/format";
-import { suggestRule, createRule, getTransactionLogs } from "../api/client";
+} from "../../utils/format";
+import { suggestRule, createRule, getTransactionLogs } from "../../api/client";
 import toast from "react-hot-toast";
 
 export default function TransactionRow({
